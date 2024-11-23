@@ -107,7 +107,7 @@ function getCfgObj() {
       // Unpack dev.json file
       rawCfg = JSON.parse(Deno.readTextFileSync(CfgFilePath));
    }
-   // return it
+   // return it now
    return rawCfg
 }
 
