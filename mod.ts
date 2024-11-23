@@ -1,34 +1,46 @@
 // deno-lint-ignore-file no-explicit-any
 import { join } from "jsr:@std/path";
+
+/** Configuration options-bag type */
 export type Config = {
-   /** file name for the build bundle */
+
+   /** file name for the esBuild bundle */
    BundleName?: string
+
    /** current working directory */
    CWD?: string
-   /** a boolean flag used to enable logging or ? */
+
+   /** a boolean flag used to enable developer mode logging or ?? */
    DEV?: boolean
+
    /** an array of entry files to start esBuild from */
    Entry?: string[]
+
    /** minify the esbuild bundle? */
    Minify?: boolean
+
    /** esbuild outfile */
    Out?: string
-   /** a port number for the server or a service to use*/
+
+   /** a port number for the server or a service */
    Port?: number
+
    /** the folder to serve index.html from */
    Serve?: string
+
    /** Array of folders to watch for changes in. (to trigger a build) */
    Watch?: string[]
 }
 
 /** The full path for the dev.json configuration file */
-const CfgFilePath = "./.vscode/dev.json"
+const ConfigFilePath = "./.vscode/dev.json"
 
 /** A default configuration file */
 export const DefaultCFG: Config = {
    BundleName: "",
    CWD: "",
    DEV: true,
+   Entry: ["./main.ts"],
    Minify: false,
    Out: "dist",
    Port: 80,
@@ -36,42 +48,42 @@ export const DefaultCFG: Config = {
    Watch: ["src"],
 } as Config
 
-/** getConfig async function
+/** 
+ *  retrieve or build and return a configuration
  *  @param {string} name - the name of the configuration object
- *  @param {string[]} args - any cli args
- *  @param {Config} defaultCfg - an optional default Config 
- *  @returns Promise\<ConfigYML\>
+ *  @param {string[]} args - any passed in cli args
+ *  @param {Config} defaultConfiguration - a default configuration 
+ *  @returns Config
  */
 export function getConfig(
    name: string,
    args: string[],
-   defaultCfg: Config
+   defaultConfiguration: Config
 ): Config {
 
-   // get any existing cfg from ./.vscode/dev.json
-   const devCfg = getCfgObj()
+   // get any existing named configuration from ./.vscode/dev.json
+   const persistedConfigurations = getExistingConfigurations()
 
    // first find existing cfg, else use passed in defaultCfg
-   const thisNamedCfg = (name in devCfg)
-      ? devCfg[name]
-      : defaultCfg
-   
-   // adjust thisCfg with any passed in args - args take priority
-   const thisNewCfg = (args.length)
-      ? unpackArgs(args, thisNamedCfg) // mutate defaults with any cli-args
-      : thisNamedCfg
+   const namedConfiguration = (name in persistedConfigurations)
+      ? persistedConfigurations[name]
+      : defaultConfiguration
 
-   // save it
-   persistCfg(name, thisNewCfg)
+   // adjust this configuration with any passed in args - args take priority
+   const newConfig = (args.length)
+      ? unpackArgs(args, namedConfiguration) // mutate defaults with any cli-args
+      : namedConfiguration
 
-   // send it
-   return thisNewCfg
+   // persist it
+   persistConfig(name, newConfig)
+   // return it
+   return newConfig
 }
 
-/** Does dev.json file exist */
-function cfgFileExists() {
+/** Does the ./.vscode/dev.json file exist */
+function configFileExists() {
    try {
-      const result = Deno.statSync(CfgFilePath)
+      const result = Deno.statSync(ConfigFilePath)
       return (result.isFile)
    } catch (e) {
       if (e instanceof Deno.errors.NotFound) {
@@ -82,42 +94,40 @@ function cfgFileExists() {
    }
 }
 
-/** Args are expected in defaultCfg-order where all are optional. */
-function unpackArgs(args: string[], defaultCfg: any): Config {
-   // marry args to cfg values
-   const cfgKeys = Array.from(Object.keys(defaultCfg))
-   cfgKeys.forEach((element, index) => {
-      if (args[index]) {
-         let arg = args[index]
+/** unpack and assign any args to default config properties */
+function unpackArgs(args: string[], defaultConfig: any): Config {
+   // loop thru args and asign by type
+   args.forEach((arg) => {
+      if (typeof arg === 'string') defaultConfig.Serve = arg
+      if (typeof arg === 'number') {
          if (arg === 'root') arg = ''
-         defaultCfg[element] = arg
-      } else {
-         if (defaultCfg[element] === 'root') defaultCfg[element] === ''
+         defaultConfig.Port = arg
       }
+      if (typeof arg === 'boolean') defaultConfig.DEV = arg
    })
-   return defaultCfg
+   return defaultConfig
 }
 
-/** Get raw configuration object from 'dev.json' */
-function getCfgObj() {
+/** Get all named configuration objects from 'dev.json' */
+function getExistingConfigurations() {
    // start as empty object
    let rawCfg: Record<string, any> = {}
    // get the existing dev.json object
-   if (cfgFileExists()) {
+   if (configFileExists()) {
       // Unpack dev.json file
-      rawCfg = JSON.parse(Deno.readTextFileSync(CfgFilePath));
+      rawCfg = JSON.parse(Deno.readTextFileSync(ConfigFilePath));
    }
    // return it now
    return rawCfg
 }
 
 /** Write a named configuration to the dev.json file */
-async function persistCfg(name: string, thisNamedCfg: any) {
+async function persistConfig(name: string, thisNamedCfg: any) {
    // get all
-   const config: Record<string, any> = getCfgObj() 
+   const config: Record<string, any> = getExistingConfigurations()
    // add or modify this named config
    config[name] = thisNamedCfg
    await Deno.mkdir(join(".", ".vscode"), { recursive: true });
    // write all
-   Deno.writeTextFileSync(CfgFilePath, JSON.stringify(config, null, 3));
+   Deno.writeTextFileSync(ConfigFilePath, JSON.stringify(config, null, 3));
 }
