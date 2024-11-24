@@ -98,12 +98,14 @@ function configFileExists() {
 function unpackArgs(args: string[], defaultConfig: any): Config {
    // loop thru args and asign by type
    args.forEach((arg) => {
-      if (typeof arg === 'string') defaultConfig.Serve = arg
-      if (typeof arg === 'number') {
-         if (arg === 'root') arg = ''
-         defaultConfig.Port = arg
+      // fix number strings
+      let thisArg = (parseInt(arg) > 0) ? parseInt(arg) : arg
+      if (typeof thisArg === 'string') {
+         if (thisArg === 'root') thisArg = ''
+         defaultConfig.Serve = thisArg
       }
-      if (typeof arg === 'boolean') defaultConfig.DEV = arg
+      if (typeof thisArg === 'number') defaultConfig.Port = thisArg
+      if (typeof arg === 'boolean') defaultConfig.DEV = thisArg
    })
    return defaultConfig
 }
