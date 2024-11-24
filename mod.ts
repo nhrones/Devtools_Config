@@ -35,18 +35,18 @@ export type Config = {
 /** The full path for the dev.json configuration file */
 const ConfigFilePath = "./.vscode/dev.json"
 
-/** A default configuration file */
-export const DefaultCFG: Config = {
-   BundleName: "",
-   CWD: "",
-   DEV: true,
-   Entry: ["./main.ts"],
-   Minify: false,
-   Out: "dist",
-   Port: 80,
-   Serve: "",
-   Watch: ["src"],
-} as Config
+// /** A default configuration file */
+// export const DefaultCFG: Config = {
+//    BundleName: "bundle.js",
+//    CWD: "",
+//    DEV: true,
+//    Entry: ["./src/main.ts"],
+//    Minify: false,
+//    Out: "dist",
+//    Port: 80,
+//    Serve: "",
+//    Watch: ["src"],
+// } as Config
 
 /** 
  *  retrieve or build and return a configuration
@@ -110,7 +110,7 @@ function unpackArgs(args: string[], defaultConfig: any): Config {
    return defaultConfig
 }
 
-/** Get all named configuration objects from 'dev.json' */
+/** Get all named configuration objects from '.vscode/dev.json' */
 function getExistingConfigurations() {
    // start as empty object
    let rawCfg: Record<string, any> = {}
@@ -119,7 +119,7 @@ function getExistingConfigurations() {
       // Unpack dev.json file
       rawCfg = JSON.parse(Deno.readTextFileSync(ConfigFilePath));
    }
-   // return it now
+   // return it
    return rawCfg
 }
 
