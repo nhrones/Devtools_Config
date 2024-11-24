@@ -7,9 +7,6 @@ export type Config = {
    /** file name for the esBuild bundle */
    BundleName?: string
 
-   /** current working directory */
-   CWD?: string
-
    /** a boolean flag used to enable developer mode logging or ?? */
    DEV?: boolean
 
@@ -20,7 +17,7 @@ export type Config = {
    Minify?: boolean
 
    /** esbuild outfile */
-   Out?: string
+   OutPath?: string
 
    /** a port number for the server or a service */
    Port?: number
@@ -34,19 +31,6 @@ export type Config = {
 
 /** The full path for the dev.json configuration file */
 const ConfigFilePath = "./.vscode/dev.json"
-
-// /** A default configuration file */
-// export const DefaultCFG: Config = {
-//    BundleName: "bundle.js",
-//    CWD: "",
-//    DEV: true,
-//    Entry: ["./src/main.ts"],
-//    Minify: false,
-//    Out: "dist",
-//    Port: 80,
-//    Serve: "",
-//    Watch: ["src"],
-// } as Config
 
 /** 
  *  retrieve or build and return a configuration

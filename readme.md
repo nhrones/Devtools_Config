@@ -18,9 +18,6 @@ export type Config = {
    /** file name for the esBuild bundle - default = bundle.js */
    BundleName?: string
 
-   /** current working directory - will overide deno.cwd*/
-   CWD?: string
-
    /** a boolean flag used to enable developer mode logging - default = false*/
    DEV?: boolean
 
@@ -29,6 +26,9 @@ export type Config = {
 
    /** minify the esbuild bundle? - defaults to false*/
    Minify?: boolean
+
+   /** esbuild outfile */
+   OutPath?: string
 
    /** a port number for the server or a service */
    Port?: number
