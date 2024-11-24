@@ -106,7 +106,7 @@ function getExistingConfigurations() {
    // return it
    return rawCfg
 }
-
+ 
 /** Write a named configuration to the dev.json file */
 async function persistConfig(name: string, thisNamedCfg: any) {
    // get all
