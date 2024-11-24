@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { join } from "jsr:@std/path";
+import { join } from "jsr:@std/path@1.0.8";
 
 /** Configuration options-bag type */
 export type Config = {

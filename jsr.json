@@ -1,0 +1,13 @@
+{
+   "name": "@ndh/config",
+   "version": "1.0.0",
+   "description": "A utility to auto-add configuration",
+   "exports": "./mod.ts",
+   "license": "MIT",
+   "publish": {
+     "include": [
+       "readme.md",
+       "mod.ts"
+     ]
+   }
+ }
