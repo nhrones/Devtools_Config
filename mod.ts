@@ -25,6 +25,9 @@ export type Config = {
    /** the folder to serve index.html from */
    Serve?: string
 
+   /** the name of the html file to serve */
+   HtmlName?: string
+
    /** Array of folders to watch for changes in. (to trigger a build) */
    Watch?: string[]
 }
