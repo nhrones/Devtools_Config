@@ -16,6 +16,9 @@ export type Config = {
    /** minify the esbuild bundle? */
    Minify?: boolean
 
+   /** esbuild bundle? */
+   Bundle?: boolean
+   
    /** esbuild outfile */
    OutPath?: string
 
