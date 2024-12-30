@@ -1,125 +1,42 @@
-// deno-lint-ignore-file no-explicit-any
-import { join } from "jsr:@std/path@1.0.8";
 
-/** Configuration options-bag type */
-export type Config = {
-
-   /** file name for the esBuild bundle */
-   BundleName?: string
-
-   /** a boolean flag used to enable developer mode logging or ?? */
-   DEV?: boolean
-
-   /** an array of entry files to start esBuild from */
-   Entry?: string[]
-
-   /** minify the esbuild bundle? */
-   Minify?: boolean
-
-   /** esbuild bundle? */
-   Bundle?: boolean
-   
-   /** esbuild outfile */
-   OutPath?: string
-
-   /** a port number for the server or a service */
-   Port?: number
-
-   /** the folder to serve index.html from */
-   Serve?: string
-
-   /** the name of the html file to serve */
-   HtmlName?: string
-
-   /** Array of folders to watch for changes in. (to trigger a build) */
-   Watch?: string[]
-}
-
-/** The full path for the dev.json configuration file */
-const ConfigFilePath = "./.vscode/dev.json"
+import { fetchConfigurations, persistConfig } from "./devJSON.ts";
+import type { Config}  from "./types.ts";
+import { parseArgs } from "./shared.ts" 
+import { setTask } from "./tasksJSON.ts";
 
 /** 
  *  retrieve or build and return a configuration
  *  @param {string} name - the name of the configuration object
- *  @param {string[]} args - any passed in cli args
- *  @param {Config} defaultConfiguration - a default configuration 
+ *  @param {string[]} cliArgs - any passed in cli args
+ *  @param {ConfigOptions} defaultConfiguration - a default configuration 
  *  @returns Config
  */
 export function getConfig(
    name: string,
-   args: string[],
+   cliArgs: string[],
    defaultConfiguration: Config
 ): Config {
-
    // get any existing named configuration from ./.vscode/dev.json
-   const persistedConfigurations = getExistingConfigurations()
+   const persistedConfigurations = fetchConfigurations()
 
-   // first find existing cfg, else use passed in defaultCfg
+   // find any existing configuration
    const namedConfiguration = (name in persistedConfigurations)
       ? persistedConfigurations[name]
-      : defaultConfiguration
+      : defaultConfiguration // use passed in defaultConfiguration
 
-   // adjust this configuration with any passed in args - args take priority
-   const newConfig = (args.length)
-      ? unpackArgs(args, namedConfiguration) // mutate defaults with any cli-args
-      : namedConfiguration
+   // adjust this configuration with any cliArgs - cliArgs take priority
+   const newConfig = (cliArgs.length)
+      ? parseArgs(cliArgs, namedConfiguration) // mutate with cliArgs
+      : namedConfiguration  // no args, just use as is
 
-   // persist it
+   // persist new config
    persistConfig(name, newConfig)
+
+   // set up a vscode task
+   setTask(name)
+   
    // return it
    return newConfig
 }
 
-/** Does the ./.vscode/dev.json file exist */
-function configFileExists() {
-   try {
-      const result = Deno.statSync(ConfigFilePath)
-      return (result.isFile)
-   } catch (e) {
-      if (e instanceof Deno.errors.NotFound) {
-         return false
-      } else {
-         throw e
-      }
-   }
-}
-
-/** unpack and assign any args to default config properties */
-function unpackArgs(args: string[], defaultConfig: any): Config {
-   // loop thru args and asign by type
-   args.forEach((arg) => {
-      // fix number strings
-      let thisArg = (parseInt(arg) > 0) ? parseInt(arg) : arg
-      if (typeof thisArg === 'string') {
-         if (thisArg === 'root') thisArg = ''
-         defaultConfig.Serve = thisArg
-      }
-      if (typeof thisArg === 'number') defaultConfig.Port = thisArg
-      if (typeof arg === 'boolean') defaultConfig.DEV = thisArg
-   })
-   return defaultConfig
-}
-
-/** Get all named configuration objects from '.vscode/dev.json' */
-function getExistingConfigurations() {
-   // start as empty object
-   let rawCfg: Record<string, any> = {}
-   // get the existing dev.json object
-   if (configFileExists()) {
-      // Unpack dev.json file
-      rawCfg = JSON.parse(Deno.readTextFileSync(ConfigFilePath));
-   }
-   // return it
-   return rawCfg
-}
- 
-/** Write a named configuration to the dev.json file */
-async function persistConfig(name: string, thisNamedCfg: any) {
-   // get all
-   const config: Record<string, any> = getExistingConfigurations()
-   // add or modify this named config
-   config[name] = thisNamedCfg
-   await Deno.mkdir(join(".", ".vscode"), { recursive: true });
-   // write all
-   Deno.writeTextFileSync(ConfigFilePath, JSON.stringify(config, null, 3));
-}
+export type { Config }
