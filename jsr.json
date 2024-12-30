@@ -7,7 +7,12 @@
    "publish": {
      "include": [
        "readme.md",
-       "mod.ts"
+       "mod.ts",
+       "devJSON.ts",
+       "io.ts",
+       "shared.ts",
+       "tasksJSON.ts",
+       "types.ts"
      ]
    }
  }

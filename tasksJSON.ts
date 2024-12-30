@@ -8,7 +8,7 @@ export const TaskFilePath = "./.vscode/tasks.json"
 /** 
  * Inserts or updates a task and persists all to tasks.json
  * */
-export function persistTask(task: Task) {
+export function persistTask(task: Task): void {
 
    // get all tasks as object
    const tasks = fetchTasks()

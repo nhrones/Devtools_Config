@@ -11,7 +11,7 @@ export const ConfigFilePath = "./.vscode/dev.json"
 export function persistConfig(
    name: string,
    thisNamedCfg: Record<string, ConfigValue>
-) {
+): void {
 
    // get all
    const configs: Record<string, ConfigObject> = fetchConfigurations()
