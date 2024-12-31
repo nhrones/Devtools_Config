@@ -34,12 +34,11 @@ export function persistTask(task: Task): void {
 
 /** find the index of an existing task */
 function taskExists(taskName: string, Tasks: Task[]): boolean {
-
+   let found = false
    Tasks.forEach((task) => {
-      if (task.label === taskName) return true
+      found = (task.label === taskName)
    })
-
-   return false
+   return found
 }
 
 /** 
@@ -65,13 +64,11 @@ export function fetchTasks(): Task[] {
 /** 
  * set a task 
  */
-export function setTask(name: string, semver: string): void {
+export function setTask(name: "BUILD" | "RUN" | "HOT", semver: string): void {
+   
+   console.log(`setTask: name:${name}`)
 
-   let thisTask: Task = {
-      label: "NOOP",
-      type: "shell",
-      command: "echo Noop!"
-   }
+   let thisTask: Task | null = null
 
    switch (name) {
 
