@@ -1,4 +1,4 @@
-import { join } from "jsr:@std/path@1.0.8";
+import { join } from "./deps.ts";
 import type { ConfigValue, ConfigObject } from "./types.ts"
 import { fileExists } from "./io.ts";
 

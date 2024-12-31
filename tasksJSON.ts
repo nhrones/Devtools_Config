@@ -1,4 +1,4 @@
-import { join } from "jsr:@std/path@1.0.8";
+import { join } from "./deps.ts";
 import { fileExists } from "./io.ts";
 import { Task } from "./types.ts";
 
@@ -86,7 +86,7 @@ export function setTask(name: string): void {
          thisTask = {
             label: "RUN",
             type: "shell",
-            command: "deno run --allow-all --no-config https://jsr.io/@ndh/simple/1.0.1/mod.ts"
+            command: "deno run --allow-all --no-config https://jsr.io/@ndh/simple/1.0.2/mod.ts"
          };
          break;
       }
@@ -94,7 +94,7 @@ export function setTask(name: string): void {
          thisTask = {
             label: "HOT",
             type: "shell",
-            command: "deno run --allow-all --no-config https://jsr.io/@ndh/hot/1.0.6/server.ts",
+            command: "deno run --allow-all --no-config https://jsr.io/@ndh/hot/1.0.11/server.ts",
             problemMatcher: [],
             group: {
                kind: "build",
