@@ -75,7 +75,7 @@ export function setTask(name: string, semver: string): void {
 
    switch (name) {
 
-      case "build": {
+      case "BUILD": {
          thisTask = {
             label: "BUILD",
             type: "shell",
@@ -83,7 +83,7 @@ export function setTask(name: string, semver: string): void {
          };
          break;
       }
-      case "simple": {
+      case "RUN": {
          thisTask = {
             label: "RUN",
             type: "shell",
@@ -91,7 +91,7 @@ export function setTask(name: string, semver: string): void {
          };
          break;
       }
-      case "hot": {
+      case "HOT": {
          thisTask = {
             label: "HOT",
             type: "shell",
