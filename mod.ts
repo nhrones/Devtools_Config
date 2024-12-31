@@ -12,7 +12,7 @@ import { setTask } from "./tasksJSON.ts";
  *  @returns Config
  */
 export function getConfig(
-   name: string,
+   name: "BUILD" | "RUN" | "HOT",
    semver: string,
    cliArgs: string[],
    defaultConfiguration: Config
