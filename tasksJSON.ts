@@ -65,7 +65,7 @@ export function fetchTasks(): Task[] {
 /** 
  * set a task 
  */
-export function setTask(name: string): void {
+export function setTask(name: string, semver: string): void {
 
    let thisTask: Task = {
       label: "NOOP",
@@ -74,6 +74,7 @@ export function setTask(name: string): void {
    }
 
    switch (name) {
+
       case "build": {
          thisTask = {
             label: "BUILD",
@@ -86,7 +87,7 @@ export function setTask(name: string): void {
          thisTask = {
             label: "RUN",
             type: "shell",
-            command: "deno run --allow-all --no-config https://jsr.io/@ndh/simple/1.0.3/mod.ts"
+            command: `deno run --allow-all --no-config https://jsr.io/@ndh/simple/${semver}/mod.ts`
          };
          break;
       }
@@ -94,7 +95,7 @@ export function setTask(name: string): void {
          thisTask = {
             label: "HOT",
             type: "shell",
-            command: "deno run --allow-all --no-config https://jsr.io/@ndh/hot/1.0.16/server.ts",
+            command: `deno run --allow-all --no-config https://jsr.io/@ndh/hot/${semver}/server.ts`,
             problemMatcher: [],
             group: {
                kind: "build",

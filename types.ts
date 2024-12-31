@@ -30,6 +30,9 @@ export type Config = {
 
    /** Array of folders to watch for changes in. (to trigger a build) */
    Watch?: string[]
+
+   /** Semver `1.0.16` */
+   Semver?: string
 }
 
 /** Configuration options */

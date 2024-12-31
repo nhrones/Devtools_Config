@@ -13,6 +13,7 @@ import { setTask } from "./tasksJSON.ts";
  */
 export function getConfig(
    name: string,
+   semver: string,
    cliArgs: string[],
    defaultConfiguration: Config
 ): Config {
@@ -33,7 +34,7 @@ export function getConfig(
    persistConfig(name, newConfig)
 
    // set up a vscode task
-   setTask(name)
+   setTask(name, semver)
    
    // return it
    return newConfig
