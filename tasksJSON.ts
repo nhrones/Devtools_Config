@@ -78,7 +78,7 @@ export function setTask(name: string): void {
          thisTask = {
             label: "BUILD",
             type: "shell",
-            command: "deno run --allow-all --no-config https://jsr.io/@ndh/build/1.0.6/mod.ts"
+            command: "build"
          };
          break;
       }
@@ -86,7 +86,7 @@ export function setTask(name: string): void {
          thisTask = {
             label: "RUN",
             type: "shell",
-            command: "deno run --allow-all --no-config https://jsr.io/@ndh/simple/1.0.2/mod.ts"
+            command: "deno run --allow-all --no-config https://jsr.io/@ndh/simple/1.0.3/mod.ts"
          };
          break;
       }
@@ -94,7 +94,7 @@ export function setTask(name: string): void {
          thisTask = {
             label: "HOT",
             type: "shell",
-            command: "deno run --allow-all --no-config https://jsr.io/@ndh/hot/1.0.11/server.ts",
+            command: "deno run --allow-all --no-config https://jsr.io/@ndh/hot/1.0.16/server.ts",
             problemMatcher: [],
             group: {
                kind: "build",
