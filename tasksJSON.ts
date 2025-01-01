@@ -1,4 +1,3 @@
-import { join } from "./deps.ts";
 import { fileExists } from "./io.ts";
 import { Task } from "./types.ts";
 
@@ -14,7 +13,7 @@ export function persistTask(task: Task): void {
    const tasks = fetchTasks()
 
    // insure the folder exists
-   Deno.mkdirSync(join(".", ".vscode"), { recursive: true });
+   Deno.mkdirSync(".vscode", { recursive: true });
 
    // if task does not exist, add it
    if (!taskExists(task.label, tasks)) {

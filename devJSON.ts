@@ -1,4 +1,3 @@
-import { join } from "./deps.ts";
 import type { ConfigValue, ConfigObject } from "./types.ts"
 import { fileExists } from "./io.ts";
 
@@ -20,7 +19,7 @@ export function persistConfig(
    configs[name] = thisNamedCfg
 
    // insure the folder exists
-   Deno.mkdirSync(join(".", ".vscode"), { recursive: true });
+   Deno.mkdirSync(".vscode", { recursive: true });
 
    // write all configurations as a JSON string
    Deno.writeTextFileSync(ConfigFilePath, JSON.stringify(configs, null, 3));
