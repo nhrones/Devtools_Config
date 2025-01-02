@@ -71,3 +71,6 @@ export function fileExists(fullPath: string): boolean {
       }
    }
 }
+
+// re-export type
+export type { Config }
