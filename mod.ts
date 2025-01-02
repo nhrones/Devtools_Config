@@ -1,8 +1,6 @@
-
-import { fetchConfigurations, persistConfig } from "./devJSON.ts";
-import type { Config}  from "./types.ts";
-import { parseArgs } from "./shared.ts" 
-import { setTask } from "./tasksJSON.ts";
+import type { Config, ConfigValue }  from "./types.ts";
+import { fetchConfigurations, persistConfig } from "./dev_json.ts";
+import { setTask } from "./tasks_json.ts";
 
 /** 
  *  retrieve or build and return a configuration
@@ -40,4 +38,36 @@ export function getConfig(
    return newConfig
 }
 
-export type { Config }
+/** 
+ * unpack and assign any cli-args to default config properties 
+ */
+function parseArgs(args: string[], defaultConfig: Config): Config {
+   // loop thru args and asign by type
+   args.forEach((arg) => {
+      // fix number strings
+      let thisArg: ConfigValue = (parseInt(arg) > 0) ? parseInt(arg) : arg
+      if (typeof thisArg === 'string') {
+         if (thisArg === 'root') thisArg = ''
+         defaultConfig.Serve = thisArg
+      }
+      if (typeof thisArg === 'number') defaultConfig.Port = thisArg
+      if (typeof thisArg === 'boolean') defaultConfig.DEV = thisArg
+   })
+   return defaultConfig
+}
+
+/** 
+ * Checks that the `fullPath` file exists 
+ */
+export function fileExists(fullPath: string): boolean {
+   try {
+      const result = Deno.statSync(fullPath)
+      return (result.isFile)
+   } catch (e) {
+      if (e instanceof Deno.errors.NotFound) {
+         return false
+      } else {
+         throw e
+      }
+   }
+}

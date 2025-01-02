@@ -1,5 +1,5 @@
 import type { ConfigValue, ConfigObject } from "./types.ts"
-import { fileExists } from "./io.ts";
+import { fileExists } from "./mod.ts";
 
 /** The full path for the dev.json configuration file */
 export const ConfigFilePath = "./.vscode/dev.json"

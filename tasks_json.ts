@@ -1,4 +1,4 @@
-import { fileExists } from "./io.ts";
+import { fileExists } from "./mod.ts";
 import { Task } from "./types.ts";
 
 /** The full path for the dev.json configuration file */
@@ -64,8 +64,6 @@ export function fetchTasks(): Task[] {
  * set a task 
  */
 export function setTask(name: "BUILD" | "RUN" | "HOT", semver: string): void {
-   
-   console.log(`setTask: name:${name}`)
 
    let thisTask: Task | null = null
 
@@ -79,6 +77,7 @@ export function setTask(name: "BUILD" | "RUN" | "HOT", semver: string): void {
          };
          break;
       }
+
       case "RUN": {
          thisTask = {
             label: "RUN",
@@ -87,6 +86,7 @@ export function setTask(name: "BUILD" | "RUN" | "HOT", semver: string): void {
          };
          break;
       }
+
       case "HOT": {
          thisTask = {
             label: "HOT",
@@ -103,5 +103,6 @@ export function setTask(name: "BUILD" | "RUN" | "HOT", semver: string): void {
       default:
    }
 
+   // if we had a valid task type, save it
    if (thisTask) persistTask(thisTask)
 }

@@ -35,7 +35,7 @@ export type Config = {
    Semver?: string
 }
 
-/** Configuration options */
+/** Task options */
 export type Task = {
 
    /** name for the task */
@@ -58,7 +58,7 @@ export type Task = {
 }
 
 /**
- * Allowed value types for a property in a configuration object
+ * Allowed value types for a property in a Config object
  */
 export type ConfigValue = number | string | string[] | boolean
 

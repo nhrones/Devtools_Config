@@ -1,19 +1,16 @@
 {
-   "name": "@ndh/config",
-   "version": "1.0.10",
-   "description": "A utility to auto-add configuration",
-   "exports": "./mod.ts",
-   "license": "MIT",
-   "publish": {
-     "include": [
-       "readme.md",
-       "mod.ts",
-       "devJSON.ts",
-       "io.ts",
-       "deps.ts",
-       "shared.ts",
-       "tasksJSON.ts",
-       "types.ts"
-     ]
-   }
- }
+  "name": "@ndh/config",
+  "version": "1.1.0",
+  "description": "A utility to auto-add configuration",
+  "exports": "./mod.ts",
+  "license": "MIT",
+  "publish": {
+    "include": [
+      "dev_json.ts",
+      "mod.ts",
+      "README.md",
+      "tasks_JSON.ts",
+      "types.ts"
+    ]
+  }
+}
