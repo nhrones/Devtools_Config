@@ -9,7 +9,7 @@
       "dev_json.ts",
       "mod.ts",
       "README.md",
-      "tasks_JSON.ts",
+      "tasks_json.ts",
       "types.ts"
     ]
   }
