@@ -1,6 +1,9 @@
 import type { Config, ConfigValue }  from "./types.ts";
 import { fetchConfigurations, persistConfig } from "./dev_json.ts";
 import { setTask } from "./tasks_json.ts";
+   
+// get any existing `named` configuration from ./.vscode/dev.json
+export const persistedConfigurations = fetchConfigurations()
 
 /** 
  *  retrieve or build and return a configuration
@@ -15,8 +18,9 @@ export function getConfig(
    cliArgs: string[],
    defaultConfiguration: Config
 ): Config {
-   // get any existing named configuration from ./.vscode/dev.json
-   const persistedConfigurations = fetchConfigurations()
+   
+   // get any existing `named` configuration from ./.vscode/dev.json
+   //export const persistedConfigurations = fetchConfigurations()
 
    // find any existing configuration
    const namedConfiguration = (name in persistedConfigurations)
@@ -28,7 +32,7 @@ export function getConfig(
       ? parseArgs(cliArgs, namedConfiguration) // mutate with cliArgs
       : namedConfiguration  // no args, just use as is
 
-   // persist new config
+   // persist new config //TODO Don't add if no change (Dirty)
    persistConfig(name, newConfig)
 
    // set up a vscode task
