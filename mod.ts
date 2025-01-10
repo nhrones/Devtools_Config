@@ -1,9 +1,9 @@
-import type { Config, ConfigValue }  from "./types.ts";
+import type { Config, ConfigObject, ConfigValue }  from "./types.ts";
 import { fetchConfigurations, persistConfig } from "./dev_json.ts";
 import { setTask } from "./tasks_json.ts";
    
 // get any existing `named` configuration from ./.vscode/dev.json
-export const persistedConfigurations = fetchConfigurations()
+export const persistedConfigurations: Record<string, ConfigObject> = fetchConfigurations()
 
 /** 
  *  retrieve or build and return a configuration
