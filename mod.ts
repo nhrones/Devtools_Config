@@ -36,7 +36,7 @@ export function getConfig(
    persistConfig(name, newConfig)
 
    // set up a vscode task
-   setTask(name, semver)
+   setTask(name)
    
    // return it
    return newConfig

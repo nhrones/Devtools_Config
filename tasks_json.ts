@@ -9,7 +9,7 @@ type TaskName = "BUILD" | "RUN" | "HOT"
 /** 
  * set a task 
  */
-export function setTask(name: TaskName, semver: string): void {
+export function setTask(name: TaskName): void {
 
    let thisTask: Task | null = null
 
@@ -19,7 +19,7 @@ export function setTask(name: TaskName, semver: string): void {
          thisTask = {
             label: "BUILD",
             type: "shell",
-            command: `deno run --allow-all --no-config https://jsr.io/@ndh/build/${semver}/mod.ts`
+            command: `build`
          };
          break;
       }
@@ -28,7 +28,7 @@ export function setTask(name: TaskName, semver: string): void {
          thisTask = {
             label: "RUN",
             type: "shell",
-            command: `deno run --allow-all --no-config https://jsr.io/@ndh/simple/${semver}/mod.ts`
+            command: `serve`
          };
          break;
       }
@@ -37,7 +37,7 @@ export function setTask(name: TaskName, semver: string): void {
          thisTask = {
             label: "HOT",
             type: "shell",
-            command: `deno run --allow-all --no-config https://jsr.io/@ndh/hot/${semver}/server.ts`,
+            command: `hot`,
             problemMatcher: [],
             group: {
                kind: "build",
