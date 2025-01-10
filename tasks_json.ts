@@ -67,23 +67,24 @@ export function persistTask(task: Task): void {
    // if task does not exist, add it
    if (!taskExists(task.label, tasks)) {
       tasks.push(task)
-   }
 
-   // write all configurations as a JSON string
-   Deno.writeTextFileSync(TaskFilePath,
-`{
+
+      // write all configurations as a JSON string
+      Deno.writeTextFileSync( TaskFilePath,
+         `{
    // See https://go.microsoft.com/fwlink/?LinkId=733558
    // for the documentation about the tasks.json format
    "version": "2.0.0",
    "tasks": ${JSON.stringify(tasks, null, 3)}}`
-   );
+      );
+   }
 }
 
 /** find the index of an existing task */
 function taskExists(taskName: string, Tasks: Task[]): boolean {
    let found = false
    Tasks.forEach((task) => {
-      found = (task.label === taskName)
+      if (task.label === taskName) found = true
    })
    return found
 }
